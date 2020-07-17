@@ -1,0 +1,25 @@
+1 为表加上独占锁
+	lock table test_gz exclusive;
+2 查看表的锁
+	show locks test_gz;
+	OK
+	default@test_gz	EXCLUSIVE
+3 对表进行解锁操作
+	unlock table test_gz;
+4 hive with 关键字使用 多个使用,分隔，但是最后一个不需要,号
+	with t1 
+	as (select * from test_gz),
+	t2 as (select * from test_gz) 
+	select * from t1,t2;
+5 hive count
+ 	count(*)
+ 
+  , count(DISTINCT u)
+ 
+  , count(CASE WHEN plat=1 THEN u ELSE NULL END)
+ 
+  , count(DISTINCT CASE WHEN plat=1 THEN u ELSE NULL END)
+ 
+  , count(CASE WHEN (type=2 OR type=6) THEN u ELSE NULL END)
+ 
+  , count(DISTINCT CASE WHEN (type=2 OR type=6) THEN u ELSE NULL END)

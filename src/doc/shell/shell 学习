@@ -1,0 +1,23 @@
+1 判断字符串的长度是否为0
+	if [ -n $1 ]
+	then "为空"
+	else
+	echo "非空"
+	fi;
+2 判断字字符串是否为空
+  if [ ! $1 ]
+  then "为空"
+	else
+	echo "非空"
+	fi;
+3 date 时间计算
+	当前自然日的前一天
+	date -d "-1 day" +%Y-%m-%d 
+	指定日期相减
+	date -d "2020-06-24 -1 day" +%Y-%m-%d
+4 awk 提取进程号
+	ps -ef | grep python | grep -v grep | awk -d' ',-F '{print $2}'
+5 cut 按照空格切分 提取进程号
+	jps -lm | grep Kafka | grep -v grep | cut -d ' ' -f 1
+6 通过yarn application --list 获取指定应用的applicationid,名字,状态
+yarn application --list  | grep logDealStreamingApp | grep -v grep | awk -d' ',-F '{print $1,$2,$6}'

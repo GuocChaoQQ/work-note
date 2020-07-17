@@ -1,0 +1,4 @@
+spark cache 和 checkpoint
+1 BlockManager 在每个executor和driver 节点上
+2 checkpoint 是lazy级别，必须保证有job执行
+	在进行checkpoint 的时候 有多少个分区就会生成多少个小文件

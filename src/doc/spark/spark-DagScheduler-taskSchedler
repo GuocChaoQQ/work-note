@@ -1,0 +1,106 @@
+action算子-------->
+					sparkcontext的sc.runJob(this, (iter: Iterator[T]) => iter.toArray)
+					DAGScheduler---> dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+							runJob中的提交job----> val waiter = submitJob(rdd, func, partitions, callSite, resultHandler, properties)
+							eventProcessLoop------>eventProcessLoop.post(JobSubmitted(jobId, rdd, func2, partitions.toArray, callSite, waiter,SerializationUtils.clone(properties)))
+							处理jobJobSubmitted -->org.apache.spark.scheduler.DAGSchedulerEventProcessLoop#doOnReceive
+												dagScheduler.handleJobSubmitted(jobId, rdd, func, partitions, callSite, listener, properties)
+												创建ResultStage:var finalStage: ResultStage = createResultStage(finalRDD, func, partitions, jobId, callSite)
+												提交stage submitStage(finalStage)
+												获取父stage:val missing = getMissingParentStages(stage).sortBy(_.id)
+													if (missing.isEmpty) { // 没有父stage 提交task
+														logInfo("Submitting " + stage + " (" + stage.rdd + "), which has no missing parents")
+														submitMissingTasks(stage, jobId.get) 
+													} else {
+													  for (parent <- missing) {
+														submitStage(parent) // 有父stage 递归提交 stage
+													  }
+													 }
+												
+													submitMissingTasks 提交task
+															 val partitionsToCompute: Seq[Int] = stage.findMissingPartitions() // 获取当前stage 的所有分区数
+															 val tasks: Seq[Task[_]] = try {
+																  val serializedTaskMetrics = closureSerializer.serialize(stage.latestInfo.taskMetrics).array()
+																  stage match {
+																  // 模式匹配 匹配当前的 stage 是 shuffleMapStage 还是ResultStage
+																	case stage: ShuffleMapStage =>
+																	  stage.pendingPartitions.clear()
+																	  partitionsToCompute.map { id => // 遍历stage的每个分区
+																		val locs = taskIdToLocations(id)
+																		val part = partitions(id)
+																		stage.pendingPartitions += id
+																		// 为每个分区new ShuffleMapTask
+																		new ShuffleMapTask(stage.id, stage.latestInfo.attemptNumber,
+																		  taskBinary, part, locs, properties, serializedTaskMetrics, Option(jobId),
+																		  Option(sc.applicationId), sc.applicationAttemptId, stage.rdd.isBarrier())
+																	  }
+
+																	case stage: ResultStage =>
+																	  partitionsToCompute.map { id =>
+																		val p: Int = stage.partitions(id)
+																		val part = partitions(p)
+																		val locs = taskIdToLocations(id)
+																		new ResultTask(stage.id, stage.latestInfo.attemptNumber,
+																		  taskBinary, part, locs, id, properties, serializedTaskMetrics,
+																		  Option(jobId), Option(sc.applicationId), sc.applicationAttemptId,
+																		  stage.rdd.isBarrier())
+																	  }
+																  }
+																} catch {
+																  case NonFatal(e) =>
+																	abortStage(stage, s"Task creation failed: $e\n${Utils.exceptionString(e)}", Some(e))
+																	runningStages -= stage
+																	return
+																}
+																
+													判断当前stage 是否有task
+															if (tasks.size > 0) {
+														  logInfo(s"Submitting ${tasks.size} missing tasks from $stage (${stage.rdd}) (first 15 " +
+															s"tasks are for partitions ${tasks.take(15).map(_.partitionId)})")
+					taskScheduler------------------->处理当前stage的TaskSet：	taskScheduler.submitTasks(new TaskSet(
+															tasks.toArray, stage.id, stage.latestInfo.attemptNumber, jobId, properties))
+														}
+														
+							org.apache.spark.scheduler.TaskSchedulerImpl#submitTasks 处理taks
+													//为task设置调度方式  FIFOSchedulableBuilder 先进先出  FairSchedulableBuilder公平调度
+													schedulableBuilder.addTaskSetManager(manager, manager.taskSet.properties)	
+													
+					SchedulerBackend---------------->backend.reviveOffers()
+															org.apache.spark.scheduler.cluster.CoarseGrainedClusterMessages.ReviveOffers$
+															case ReviveOffers => //模式匹配接收到的消息
+																	makeOffers() 
+																		----->  
+																				//封装task
+																					val taskDescs = withLock {
+																							// Filter out executors under killing
+																							val activeExecutors = executorDataMap.filterKeys(executorIsAlive) //过滤出当前活着的executor
+																							val workOffers = activeExecutors.map {
+																							  case (id, executorData) =>
+																							  // 封装WorkerOffer信息
+																								new WorkerOffer(id, executorData.executorHost, executorData.freeCores,
+																								  Some(executorData.executorAddress.hostPort))
+																							}.toIndexedSeq
+																							scheduler.resourceOffers(workOffers)
+																						  }
+																						  if (!taskDescs.isEmpty) {
+																	launchTasks	发送作业		launchTasks(taskDescs) // 
+																							}																				
+																	
+																	
+																	
+																	launchTasks(taskDescs)
+																					 for (task <- tasks.flatten) {// 遍历当前的teskset集合
+																								val executorData = executorDataMap(task.executorId) // 根据task上的executor id 获取对应的executor
+																							  executorData.freeCores -= scheduler.CPUS_PER_TASK //  当前executor的空闲核数-1  val CPUS_PER_TASK = conf.getInt("spark.task.cpus", 1)
+																							  executorData.executorEndpoint.send(LaunchTask(new SerializableBuffer(serializedTask))) // 像executorEndpoint 发送LaunchTask消息
+																					 
+																					 }
+																					
+																	
+																	
+																	
+																	
+					
+					
+					
+					

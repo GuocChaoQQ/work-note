@@ -1,0 +1,621 @@
+1 spark 提交任务命令
+spark-submit --class TestSpark \
+--master yarn \
+--deploy-mode client \
+--driver-memory 1g \
+--executor-memory 2g \
+--executor-cores 2 \
+dw-origin-sdk-1.0.0-SNAPSHOT-shaded.jar
+
+
+
+2 创建df
+val peopleDF = spark.createDataFrame(rowRDD, schema)
+
+3 隐士转换
+implicit  val myEncoder = org.apache.spark.sql.Encoders.tuple[Int,String,Int](Encoders.scalaInt,Encoders.STRING,Encoders.scalaInt)
+
+4 正则分组脱敏数据
+"12345678910".replaceAll("^(\\d{3})\\d+(\\d{4})", "$1***$2")
+
+5 sparkcontext 广播变量 
+Broadcast<int[]> broadcastVar = sc.broadcast(new int[] {1, 2, 3});
+broadcastVar.value();
+
+6 spark textFile  默认为每个文件块创建一个分区
+
+7 JavaSparkContext.wholeTextFiles允许您读取包含多个小文本文件的目录，并将每个小文本文件作为（文件名，内容）对返回。 这与textFile相反，后者将在每个文件的每一行返回一条记录。
+
+8 sqoop采集数据命令
+
+sqoop import 
+--connect jdbc:mysql://192.168.2.166:3306/zuanzhan 
+--username admin 
+--password 123456 
+--table dsp_customertag 
+--m 1 
+--target-dir test 
+--as-parquetfile
+
+
+9 spark hive sql 开启动态分区功能
+sparkSession.conf().set("hive.exec.dynamic.partition","true"); // 动态分区
+sparkSession.conf().set("hive.exec.dynamic.partition.mode","nonstrict"); // 非严格模式
+    spark.sql("set hive.exec.dynamic.partition=true")
+     spark.sql("set hive.exec.dynamic.partition.mode=nonstrict")
+     spark.sql("set hive.exec.max.dynamic.partitions=100000")
+     spark.sql("set hive.exec.max.dynamic.partitions.pernode=100000")
+     spark.sql("set hive.exec.max.created.files=100000")
+
+10 Cassandra
+
+functions.weekofyear(functions.from_unixtime(functions.unix_timestamp(functions.col("rowKey"),"yyyymmdd"),"yyyy-mm-dd")).as("weekOfYear")
+
+
+
+Dataset<OdsRepaySchedule> changedDataset = odsDataset.filter(new FilterFunction<OdsRepaySchedule>() {
+	@Override
+	 public boolean call(OdsRepaySchedule value) throws Exception {
+	 return value.getFlag()==null || "2".equals(value.getFlag());
+	 }
+}).as(encoder);
+
+https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query={2017}年&resource_id=6018&format=json
+
+https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query=2017年5月&resource_id=6018&format=json
+
+spark-submit --class com.weshare.main.ReadAccountPrimaryRelation \
+--master yarn \
+--deploy-mode client \
+--driver-memory 1g \
+--executor-memory 2g \
+--executor-cores 2 \
+/root/logd/dw-origin-sdk-1.0.0-SNAPSHOT-shaded.jar
+
+
+
+//		sparkSession.sparkContext().conf().registerKryoClasses(new Class[]{EcIfFacility.class});
+
+
+
+truncate_preserve 'test'
+
+
+
+
+
+
+
+
+ClassTag<Object> apply = ClassTag$.MODULE$.apply(Map.class);
+Broadcast<Object> broadcast = sparkSession.sparkContext().broadcast(allHolidayByMonth, apply);
+
+
+
+
+
+https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query=2018年5月&resource_id=6018&format=json
+
+
+
+
+nmsdb.nms_interface_req_log
+ccsdb1.ccs_cust_limit
+ecasdb.ecas_cust_limit
+ccsdb1.ccs_customer
+ecasdb.ecas_customer
+
+
+滴滴：
+	ecasdb.ecas_msg_log
+	mysql_DB:10.83.16.16:3306
+	root/Zn9nvRr9gw1pugP
+盒子：
+asset_status.t_real_param
+	10.83.16.10:3306
+    username: root
+    password: Xfxcj2018@)!*
+汇通：
+nmsdb.nms_interface_req_log
+mysql_DB:10.83.16.23:3306
+root/Ws2018!07@
+
+客户额度表：
+mysql_DB:10.83.16.23:3306
+root/Ws2018!07@
+ccsdb1.ccs_cust_limit
+ecasdb.ecas_cust_limit
+
+ccsdb1.ccs_linkman
+ecasdb.ECAS_LINKMAN 
+
+ecas_linkman
+
+
+参数名	参数说明
+--master	 master 的地址，提交任务到哪里执行，例如 spark://host:port,  yarn,  local
+--deploy-mode	 在本地 (client) 启动 driver 或在 cluster 上启动，默认是 client
+--class	 应用程序的主类，仅针对 java 或 scala 应用
+--name	 应用程序的名称
+--jars	 用逗号分隔的本地 jar 包，设置后，这些 jar 将包含在 driver 和 executor 的 classpath 下
+--packages	 包含在driver 和executor 的 classpath 中的 jar 的 maven 坐标
+--exclude-packages	 为了避免冲突 而指定不包含的 package
+--repositories	 远程 repository
+--conf PROP=VALUE	
+ 指定 spark 配置属性的值，
+
+ 例如 -conf spark.executor.extraJavaOptions="-XX:MaxPermSize=256m"
+
+--properties-file	 加载的配置文件，默认为 conf/spark-defaults.conf
+--driver-memory	 Driver内存，默认 1G
+--driver-java-options	 传给 driver 的额外的 Java 选项
+--driver-library-path	 传给 driver 的额外的库路径
+--driver-class-path	 传给 driver 的额外的类路径
+--driver-cores	 Driver 的核数，默认是1。在 yarn 或者 standalone 下使用
+--executor-memory	 每个 executor 的内存，默认是1G
+--total-executor-cores	 所有 executor 总共的核数。仅仅在 mesos 或者 standalone 下使用
+--num-executors	 启动的 executor 数量。默认为2。在 yarn 下使用
+--executor-core	 每个 executor 的核数。在yarn或者standalone下使用
+
+
+create   'h_dim_data_ref','nms_interface_req_log','t_real_param','ecas_msg_log','ccs_cust_limit','ecas_cust_limit'
+
+create 'h_dim_data_ref','nms_interface_resp_log','ecas_msg_log','t_real_param','kb_system_status','ecas_linkman','ccs_linkman'
+
+
+
+
+
+INSERT INTO `kb_system_status`(`STATUS_ID`, `ORG`, `BUSINESS_DATE`, `PROCESS_DATE`, `LAST_PROCESS_DATE`, `GRACE_TIME`, `MTN_DATE`, `JPA_VERSION`) VALUES ('10001', '000000000001', '2020-01-20', '2020-01-20', '2020-01-20', '2017-12-25 11:26:00', '2017-07-04 22:10:13', 26); 
+
+
+
+
+
+
+case $1 in
+    1)
+        echo "变量是1"
+        ;;
+    2)
+        echo "变量是2"
+        ;;
+    3)
+        echo "变量是3"
+        ;;
+    *)
+        echo "pls input a number between 1 and 3"
+        exit;
+esac
+SELECT * FROM `ecif_core`.`ecif_customer_attribute` where attr_value="hezi111111111" LIMIT 100;
+
+
+
+boolean exists = FileLocateUtils.hdfsFileExists(sparkSession.sparkContext(), path);
+			if(exists){
+				FileLocateUtils.hdfsFileDelete(sparkSession.sparkContext(),path,false);
+			}
+
+
+
+			/**
+     *
+     * @param context
+     * @param filePath
+     * @return
+     */
+    public static boolean  hdfsFileDelete(SparkContext context, String filePath,Boolean recursive)  {
+        boolean exist=true;
+        try{
+            Configuration conf = context.hadoopConfiguration();
+            FileSystem fs = FileSystem.get(conf);
+            Path path = new Path(filePath);
+            fs.delete(path,recursive);
+        }catch (Exception e){
+
+        }
+
+        return exist;
+    }
+
+
+    20191225DIMM000015772637411admin000082000002
+
+
+
+
+sftp it-dev@10.83.0.32
+058417gv
+
+
+alter table test_partition drop partition(year=2018);
+
+
+ scp -r root@43.224.34.73:/home/lk /root
+
+
+10.80.1.47
+10.80.1.148
+10.80.1.172
+用户：root 
+密码：CQBP53G(Lv82
+
+### hue
+用户名：admin
+密码：dFGYXpxifv
+
+### cm
+用户名：admin
+密码：admin
+
+
+
+ftp://10.90.0.5
+
+yarn 配置 yarn.nodemanager.resource.cpu-vcores 8核 单个节点能分配的cpu核数
+
+yarn.app.mapreduce.am.resource.cpu-vcores  ApplicationMaster占用的cpu内核数（Gateway--资源管理 ）
+
+yarn.nodemanager.resource.memory-mb 40G
+
+
+服务器：10.80.0.86 -- root/Ig793&0ni1lFepYW
+日志：/data/asset-appfront/log
+
+数据库：
+10.80.16.25:3306 -- ecasdb/nmsdb/acmdb
+root:LZWkT2lxze6x%1V(
+
+
+
+
+删除hbase 一行的数据 指定rowkey 
+deleteall 'tablename', rowkey
+
+修复hive 分区表数据 
+msck repair table employees;
+
+
+
+alter table default.binlog_data1 add partition (day ='2020-10-05') location 'hdfs://node47:8020/user/collector/binlogData/2020-10-05';
+
+select get_json_object(binlog,'$.content') from default.binlog_data1 where
+day = '2020-10-05' and get_json_object(binlog,'$.content.Table') = 't_real_param';
+
+
+
+
+redis.host = 10.80.16.13
+redis.port = 6379
+redis.pwd = Xfx2018@)!*
+
+Broadcast_history_time
+
+redis-cli -h 10.80.16.13 -p 6379 
+auth Xfx2018@)!*
+
+set Broadcast_history_time "2019-11-22"
+
+
+
+
+#redis-config
+redis.host = 10.83.16.12
+redis.port = 6379
+redis.pwd = Xfx2018@)!*
+
+redis-cli -h 10.83.16.12 -p 6379 
+AUTH Xfx2018@)!*
+get  Broadcast_batch_time
+set Broadcast_batch_time "2020-11-06"
+
+
+host=10.83.16.43
+user=root
+pass=zU!ykpx3EG)$$1e6
+db=ccs_t_40
+
+
+select * from default.binlog_data1 where
+day = '2020-12-07'  and get_json_object(binlog,'$.content.Table') = 'ccs_plan' 
+and  get_json_object(get_json_object(get_json_object(binlog,'$.content'),'$.Data'),"$.PLAN_ID")="000015783832211admin000004000001" 
+and  get_json_object(get_json_object(get_json_object(binlog,'$.content'),'$.Data'),"$.REF_NBR")="fj12323223";
+
+
+SELECT overdue_principal  from  dm_cube.dm_repayment_schedule where statistics_date ='2021-03-15' and  bill_id in('fj12323232','fj12323233','fj12323234') and  term =1;
+
+
+hive -e "select concat('deleteall \'test_turboway\',\'',keyid,'\'') from edw.test_turboway_hbase where loginid = '20181122'" > del_temp.txt && echo 'exit' >> del_temp.txt
+hbase shell del_temp.txt > del.log
+https://www.cnblogs.com/TurboWay/p/10193998.html
+
+
+github
+Guochao145800
+
+
+
+
+
+
+
+
+
+
+
+
+
+注意  : 跑滴滴的数据 注释掉了一些东西
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS mysql_json.user_role_relation(
+ROLE_ID   STRING,
+USER_ID   STRING,
+in_hive_time   STRING,
+in_hive_type   INT
+)
+ROW FORMAT serde 'org.apache.hive.hcatalog.data.JsonSerDe'
+STORED AS TEXTFILE LOCATION '/user/flink/flink-binlog/data/mysql161345/starsource/user_role_relation';
+
+
+
+
+
+beeline -u jdbc:hive2://node123:10000 -n 
+
+hive --hiveconf hive.execution.engine=mr
+
+cache:
+    rdd 的默认缓存级别是 MEMORY_ONLY
+    Dataset 的缓存级别是 MEOMORY_AND_DISK
+
+hadoop jar data-utilities-1.0-SNAPSHOT.jar MergeSmallFile admin  hdfs://10.83.80.5:8020   /user/admin/drip_loan/table/approve true 2 >>approve.log 2>&1
+
+
+hadoop distcp hdfs://nn1:9820/foo/bar hdfs://nn2:9820/bar/foo
+
+invalidate metadata dw.dw_asset_repay_schedule
+
+http://10.80.1.82:8093/home 
+
+用户名 finley.li 密码 Liqifan@123
+
+
+
+set hive.execution.engine=mr; 
+set hive.execution.engine=spark;
+
+1 SparkSubmitArguments spark 提交任务时 的参数封装
+
+2 看spark 任务的启动方式：
+    如果是client 模式用进入master的waitingDriver 中进行等待
+    如果是cluster模式 会进入master的waitingDriver 中进行等待
+
+3 org.apache.spark.deploy.master.Master.scala 中设置了一些参数值
+    检查worker 是否有发送心跳 60秒
+org.apache.spark.deploy.master.Master#scheduleExecutorsOnWorkers  
+ var coresToAssign = math.min(app.coresLeft, usableWorkers.map(_.coresFree).sum)  // 计算 当前应用程序需要的core 和 集群中所有节点测core的总数 的最小值
+
+ 如果每个worker 只能为当前的应用程序分配一个executor，那么每次只分配一个core 
+
+ private val MAX_EXECUTOR_RETRIES = conf.getInt("spark.deploy.maxExecutorRetries", 10) 最大Executor重试次数
+
+ 使用hashset 存储work的信息 （  val workers = new HashSet[WorkerInfo]）
+
+ history | grep -v grep  | grep 'uploadjar.sh /home/admin/dataflow3.0/sourcejar/dw-base-3.0.0-SNAPSHOT.jar' | tail -1  | awk '{print $1}'
+
+  val shuffleMgrName = conf.get("spark.shuffle.manager", "sort") // 默认使用的org.apache.spark.shuffle.sort.SortShuffleManager 
+  SparkEnv.get.conf.getSizeAsMb("spark.reducer.maxSizeinFlight","48m")* 1024 * 1024, SparkEnv.get.conf.getint("spark.reducer.maxReqsinFlight",Int.MaxValue))
+
+4 //为了减少内存的压力，避免 GC 开销，引入了外部排序器对数据进行排序当内存不足
+//以容纳排序的数据量时，会根据配置的 spark.shuffle.spill 属性来决定是否需要 
+ //spill 到磁盘中，默认情况下会打开 spill 开关，若不打开 spill 开关，数据量比 较大时会引发内存溢出问题（Out of Memory, OOM) 
+
+5 自后向前建立stage，遇到shuffle 算子 生成stage
+
+
+6 union 后在原有的分区上 分区会增加原分区的一倍
+    val frame = spark.read.text("file:\\E:\\data-link3.0") 
+    println(frame.rdd.partitions.length)    3
+    val frame1 = spark.read.text("file:\\E:\\data-link3.0")
+    println(frame.union(frame1).rdd.partitions.length)   6
+7 org.apache.spark.scheduler.cluster.CoarseGrainedSchedulerBackend.DriverEndpoint#receive  // driver 的receive 方法 接收executor的执行结果
+    每个task 占用一个核心
+         executorDataMap.get(executorId) match {
+            case Some(executorInfo) =>
+              executorInfo.freeCores += scheduler.CPUS_PER_TASK //  val CPUS_PER_TASK = conf.getInt("spark.task.cpus", 1)
+              makeOffers(executorId)
+            case None =>
+              // Ignoring the update since we don't know about the executor.logWarning(s"Ignored task status update ($taskId state $state) from unknown executor with ID $executorId")          }
+
+
+
+
+8 ①在执行具体 Task 的业务逻辑前，会进行四次反序列：
+     a) TaskDescription 的反序列化。 
+     b)反序列化 Task 的依赖。 
+     c) Task 的反序列化。 
+     d) RDD 反序列化。 
+    Spark 2.2 版本中，任务序列化 CoarseGrainedSchedulerBackend 的 launchTask 方法中序列化任务大小的限制是 maxRpcMessageSize 为 128MB
+     val maxSizeInMB = conf.getInt("spark.rpc.message.maxSize", 128)
+
+9 构建守护线程线程池
+ val threadFactory = new ThreadFactoryBuilder()
+      .setDaemon(true)
+      .setNameFormat("Executor task launch worker-%d")
+      .setThreadFactory(new ThreadFactory {
+        override def newThread(r: Runnable): Thread =
+          new Thread(new Runnable {
+            override def run(): Unit = {
+              println(Thread.currentThread().getName)
+              println("1111")
+            }
+          })
+      })
+      .build()
+    val poolExecutor: ThreadPoolExecutor = Executors.newCachedThreadPool(threadFactory).asInstanceOf[ThreadPoolExecutor]
+
+      poolExecutor.execute(new Runnable {
+        override def run(): Unit = {}
+      })
+
+    Thread.sleep(Long.MaxValue)
+10 executor 在线程中运行
+11 
+spark.driver.maxResultSize   //  task任务执行完的结果大小 默认1个G
+     private[spark] val MAX_RESULT_SIZE = ConfigBuilder("spark.driver.maxResultSize")
+    .doc("Size limit for results.")
+    .bytesConf(ByteUnit.BYTE)
+    .createWithDefaultString("1g")
+spark.task.maxDirectResultSize // 块大小  小于128M的时候 放进blockManager中 conf.getSizeAsBytes("spark.task.maxDirectResultSize", 1L << 20), 128M 
+   if (maxResultSize > 0 && resultSize > maxResultSize) {
+            logWarning(s"Finished $taskName (TID $taskId). Result is larger than maxResultSize " +
+              s"(${Utils.bytesToString(resultSize)} > ${Utils.bytesToString(maxResultSize)}), " +
+              s"dropping it.")
+            ser.serialize(new IndirectTaskResult[Any](TaskResultBlockId(taskId), resultSize))
+          } else if (resultSize > maxDirectResultSize) {
+            val blockId = TaskResultBlockId(taskId)
+            env.blockManager.putBytes(
+              blockId,
+              new ChunkedByteBuffer(serializedDirectResult.duplicate()),
+              StorageLevel.MEMORY_AND_DISK_SER)
+            logInfo(
+              s"Finished $taskName (TID $taskId). $resultSize bytes result sent via BlockManager)")
+            ser.serialize(new IndirectTaskResult[Any](blockId, resultSize))
+          } else {
+            logInfo(s"Finished $taskName (TID $taskId). $resultSize bytes result sent to driver")
+            serializedDirectResult
+          }
+        }
+12 hive表增加字段 (新增字段后,插入指定字段后在hive中查询不到),需要刷新当前分区的数据,如果存在历史数据 需要删除当前分区或者刷数据
+
+alter table table_name add columns (c_time string comment '当前时间'); -- 正确，添加在最后
+alter table table_name change c_time c_time string after address ;  -- 正确，移动到指定位置,address字段的后面
+
+alter table dwb.dwb_loan_apply  add columns(`asset_level`   STRING  comment '资产等级');
+alter table dwb.dwb_loan_apply  add columns(`credit_level`  STRING  comment '信用等级');
+alter table dwb.dwb_loan_apply  add columns(`anti_fraud_level`  STRING  comment '反欺诈等级');
+
+http://10.83.0.69:8120/ 
+用户名 finley.li 密码 Liqifan@123
+
+13 累加器 只能在driver 端使用.value的方式获取累计器的值，不能再executor端获取累计器的值
+    累加器的值，遇到action算子  才会执行累加操作 在lazy的时候，没有action 算子，map算子中对累计器进行累加 会重复计算
+    spark保证每个任务对累加器的值只能更新一次，从新启动的任务不会计算累加器的值
+    但是在转换算子中，累加器的值是会重复计算的。
+14 rpcenv 生命周期  构造方法--->onstart() --->onrecive()---->onstop()
+
+15 sparksubmit 在提交完任务后，有可能提前退出 创建applicationMaster
+16 集群模式在applicationMaster 类中执行rundriver  driver 是一个线程  在线程中执行用户提交的class主类
+17 创建sparksession 对象  
+  object HiveUtils {
+  def getSparkSession( appName:String,masterUrl:String):SparkSession ={
+    SparkSession.builder().master(masterUrl).
+      appName(appName).
+      config("spark.sql.warehouse.dir", "hdfs://10.83.0.47:8020/user/hive/warehouse")
+      .config("spark.some.config.option", "some-value")
+      .config("spark.sql.adaptive.enabled","true") // spark 3.0 社区版才有
+      .config("spark.sql.shuffle.partitions","10") // 设置 shuffle 时的分区数
+      .enableHiveSupport().getOrCreate()
+  }
+18 spark 参数调优 spark 3.0 社区版才有
+    spark.sql.adaptive.shuffle.targetPostShuffleInputSize
+    动态调整 reduce 个数的 partition 大小依据。如设置 64MB，则 reduce 阶段每个 task 最少处理 64MB 的数据。默认值为 64MB。
+    spark.sql.adaptive.shuffle.targetPostShuffleRowCount
+    动态调整 reduce 个数的 partition 条数依据。如设置 20000000，则 reduce 阶段每个 task 最少处理 20000000 条的数据。默认值为 20000000。
+    spark.sql.adaptive.minNumPostShufflePartitions
+    reduce 个数区间最小值。
+    spark.sql.adaptive.maxNumPostShufflePartitions
+    reduce 个数区间最大值。
+19 查询指定的hbase列族的数据 保存到文件里 echo "scan 'h_new_account_data_ref',{COLUMNS=>['ecas_repay_schedule','ecas_loan']}" | hbase shell >>log.txt
+20 在 Shuffle Write 之后，观察两个 Stage 输出的数据量。如果有一个 Stage 数据量明显比较小，可以转换成 Broadcast Hash Join，这样就可以动态的去调整执行计划 spark 3.0 社区版才有 
+    spark.sql.adaptive.enabled=true
+    spark.sql.adaptive.join.enabled=true
+21 开启自动调整数据倾斜功能后，在作业执行过程中，Spark 会自动找出出现倾斜的 partiiton，然后用多个 task 来处理该 partition，之后再将这些 task 的处理结果进行合并 spark 3.0 社区版才有
+    spark.sql.adaptive.skewedJoin.enabled=true  倾斜处理开关。
+    spark.sql.adaptive.skewedPartitionMaxSplits 在开启 Adaptive Execution 时，控制处理一个倾斜 partition 的 task 个数上限，默认值为 5。
+    spark.sql.adaptive.skewedPartitionRowCountThreshold 倾斜的 partition 条数不能小于该值。partition 的条数如果少于这个值，数据量再大也不会被当成是倾斜的partition。默认值为 10000000。
+    spark.sql.adaptive.skewedPartitionSizeThreshold  倾斜的 partition 大小不能小于该值。默认值为 64MB。
+    spark.sql.adaptive.skewedPartitionFactor  当一个 partition 的 size 大小大于该值（所有 parititon 大小的中位数）且大于spark.sql.adaptive.skewedPartitionSizeThreshold，或者 parition 的条数大于该值（所有 parititon 条数的中位数）且大于 spark.sql.adaptive.skewedPartitionRowCountThreshold，才会被当做倾斜的 partition 进行相应的处理。默认值为 10。
+22 变化频繁的数据不适合做拉拉链，因为变化频繁相当于 每天存储一份全量数据 和 全量表一致
+23 mapreduce 对于map任务，mapred.map.max.attemots 属性控制 对于reduce 任务 则由mapred.reduce.max.attempts 任务失败尝试次数 （默认值为4，当次数大于4时，则认为整个任务失败）
+24 hadoop 默认的调度方式为FIFO 队列调度方式
+    公平调度支持抢占，在一个池特定一段吧时间内未得到公平的资源分配，调度器会终止运行迟中得到过多资源的任务。
+25 spark.sql.warehouse.dir  设置hive的元数据位置  否则spark创建的表 再hive 中访问不到
+26 linux 日期格式化 date  +%Y-%m-%d
+27  rdd union 过后 分区会变成两个rdd的分区数之和
+
+28 解决hive on spark jsonserde 的问题
+  1 cdh 页面配置hive  aux 外部jar包的位置
+  2 软连接hive 目录下的两个jar包到spark 的
+
+29 宽依赖的rdd 分区丢失，会根据血缘关系从父rdd新计算，但是未丢失的分区数据也会从新计算 导致资源的浪费
+    解决办法：针对宽依赖做checkpoint 切断血缘关系，出现故障时从 checkpoint的位置恢复
+30 checkpoint 的应用场景： rdd的血缘关系过长
+31 master 根据driver提供的参数分配资源，不关心资源是否已经分配，发出指令后记录下来，待下次申请的时候可能就会出现资源不够的现象
+
+
+alter table tablePartition set TBLPROPERTIES ('EXTERNAL'='TRUE');  //内部表转外部表
+alter table tablePartition set TBLPROPERTIES ('EXTERNAL'='FALSE');
+
+ln -s /opt/spark_share_jar/json-serde-1.3.7-jar-with-dependencies.jar  /opt/cloudera/parcels/CDH/lib/spark/hive/
+ln -s /opt/spark_share_jar/json-serde-1.3.7-jar-with-dependencies.jar  /opt/cloudera/parcels/CDH/lib/spark/jars/
+
+https://staff.login.weshareholdings.com/cas
+mudong.xiao   x123456
+
+https://eagle.weshareholdings.com/
+
+hive.map.aggr=true（用于设定是否在 map 端进行聚合，默认值为真）
+hive.groupby.mapaggr.checkinterval=100000（用于设定 map 端进行聚合操作的条目数）
+是否合并Map输出文件：hive.merge.mapfiles=true（默认值为真）
+
+是否合并Reduce 端输出文件：hive.merge.mapredfiles=false（默认值为假）
+
+合并文件的大小：hive.merge.size.per.task=256*1000*1000（默认值为 256000000）
+
+
+spark task的个数设置
+executor个数=spark.cores.max/spark.executor.cores
+
+spark.default.parallelism
+conf spark.yarn.executor.memoryOverhead=2048
+
+参数说明：该参数用于设置每个stage的默认task数量。这个参数极为重要，如果不设置可能会直接影响你的Spark作业性能。
+
+参数调优建议：Spark作业的默认task数量为500~1000个较为合适。很多同学常犯的一个错误就是不去设置这个参数，那么此时就会导致Spark自己根据底层HDFS的block数量来设置task的数量，默认是一个HDFS block对应一个task。通常来说，Spark默认设置的数量是偏少的（比如就几十个task），如果task数量偏少的话，就会导致你前面设置好的Executor的参数都前功尽弃。试想一下，无论你的Executor进程有多少个，内存和CPU有多大，但是task只有1个或者10个，那么90%的Executor进程可能根本就没有task执行，也就是白白浪费了资源！因此Spark官网建议的设置原则是，设置该参数为num-executors * executor-cores的2~3倍较为合适，比如Executor的总CPU core数量为300个，那么设置1000个task是可以的，此时可以充分地利用Spark集群的资源。
+
+spark-submit --class com.cjh.test.WordCount 
+--conf spark.default.parallelism=12 
+--conf spark.executor.memory=800m 
+--conf spark.executor.cores=2 
+--conf spark.cores.max=6 
+my.jar
+
+--conf spark.default.parallelism=5 \
+--conf spark.executor.cores=2 \
+--conf spark.cores.max=6 \
+
+spark-submit \
+--class com.weshare.bigdata.dwb.handler.DwbLoanHandler \
+--master yarn \
+--deploy-mode client \
+--driver-memory 1g \
+--executor-memory 2g \
+--jars hdfs:///user/admin/dataflow_3.0/basejar/dw-api-3.0.0-SNAPSHOT.jar,hdfs:///user/admin/dataflow_3.0/basejar/base-1.0-SNAPSHOT-shaded.jar,hdfs:///user/admin/dataflow_3.0/basejar/batch-sdk-3.0.0-SNAPSHOT.jar \
+hdfs:///user/admin/dataflow_3.0/sourcejar/dw-base-3.0.0-SNAPSHOT.jar \
+A lx
+
+
+spark.storage.memoryFraction
+参数说明：该参数用于设置RDD持久化数据在Executor内存中能占的比例，默认是0.6。也就是说，默认Executor 60%的内存，可以用来保存持久化的RDD数据。根据你选择的不同的持久化策略，如果内存不够时，可能数据就不会持久化，或者数据会写入磁盘。
+
+参数调优建议：如果Spark作业中，有较多的RDD持久化操作，该参数的值可以适当提高一些，保证持久化的数据能够容纳在内存中。避免内存不够缓存所有的数据，导致数据只能写入磁盘中，降低了性能。但是如果Spark作业中的shuffle类操作比较多，而持久化操作比较少，那么这个参数的值适当降低一些比较合适。此外，如果发现作业由于频繁的gc导致运行缓慢（通过spark web ui可以观察到作业的gc耗时），意味着task执行用户代码的内存不够用，那么同样建议调低这个参数的值。
+
+spark.shuffle.memoryFraction
+
+参数说明：该参数用于设置shuffle过程中一个task拉取到上个stage的task的输出后，进行聚合操作时能够使用的Executor内存的比例，默认是0.2。也就是说，Executor默认只有20%的内存用来进行该操作。shuffle操作在进行聚合时，如果发现使用的内存超出了这个20%的限制，那么多余的数据就会溢写到磁盘文件中去，此时就会极大地降低性能。
+
+参数调优建议：如果Spark作业中的RDD持久化操作较少，shuffle操作较多时，建议降低持久化操作的内存占比，提高shuffle操作的内存占比比例，避免shuffle过程中数据过多时内存不够用，必须溢写到磁盘上，降低了性能。此外，如果发现作业由于频繁的gc导致运行缓慢，意味着task执行用户代码的内存不够用，那么同样建议调低这个参数的值。
+
+spark.logLineage

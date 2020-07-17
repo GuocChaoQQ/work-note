@@ -1,0 +1,102 @@
+1 sparkcontext 
+		核心作用是初始化spark应用程序运行所需要的核心组件，包括高层调度器DAGscheduler，底层调度器TaskScheduler ，SchedulerBackend 负责管理整个集群为当前application分配的资源，及executer
+2 sparksubmit 启动参数详解
+		--master              master url   yarn
+		--deploy-mode   driver 程序运行的地方  client 或者cluster 默认四client
+		--class class_name 主类名称，含包名
+		--jars  依赖jar包，依赖jar和程序运行的jar包，需要换行
+		--conf spark的配置属性
+		--driver-memory driver 程序使用的内存大小 默认是1024M
+		--executor-memory 每个executor 内存大小 默认是1G
+		--driver-cores driver 程序使用的core个数 默认是1
+		--executor-cores 每个executor使用的core数  spark on yarn 默认是1 
+        --queue queue——name 指定资源队列的名称 默认 default
+        --num-executor数量，默认是2个
+
+
+
+10台机器 每台8个core  80 个核心
+
+--num-executors 8
+--executor-cores  2
+--conf "spark.default.parallelism=30"
+
+ 3 参数配置
+spark.default.parallelism
+		该参数用于设置每个stage的默认task数量。这个参数极为重要，如果不设置可能会直接影响Spark作业性能,Spark官网建议的设置原则是，设置该参数为num-executors * executor-cores的2~3倍较为合适
+spark.storage.memoryFraction
+		参数用于设置RDD持久化数据在Executor内存中能占的比例，默认是0.6。也就是说，
+		默认Executor 60%的内存，可以用来保存持久化的RDD数据。根据你选择的不同的持久化策略，
+		如果内存不够时，可能数据就不会持久化，或者数据会写入磁盘。
+spark.shuffle.memoryFraction
+		该参数用于设置shuffle过程中一个task拉取到上个stage的task的输出后，进行聚合操作时能够使用的Executor内存的比例，默认是0.2。也就是说，Executor默认只有20%的内存用来进行该操作。shuffle操作在进行聚合时，如果发现使用的内存超出了这个20%的限制，那么多余的数据就会溢写到磁盘文件中去,此时就会极大地降低性能。
+total-executor-cores 所有executor的总核数
+4.几个重要的参数说明:
+(1)executor_cores*num_executors
+		表示的是能够并行执行Task的数目不宜太小或太大！一般不超过总队列 cores 25%，比如队列总 cores 400，最大不要超过100，最小不建议低于40，除非日志量很小。
+(2)executor_cores
+		不宜为1！否则 work 进程中线程数过少，一般 2~4 为宜。
+(3)executor_memory
+		一般 6~10g 为宜，最大不超过20G，否则会导致GC代价过高，或资源浪费严重。
+(4)driver-memory
+		driver 不做任何计算和存储，只是下发任务与yarn资源管理器和task交互，除非你是 spark-shell，否则一般 1-2g
+增加每个executor的内存量，增加了内存量以后，对性能的提升，有三点：
+(5)如果需要对RDD进行cache，那么更多的内存，就可以缓存更多的数据，将更少的数据写入磁盘，甚至不写入磁盘。减少了磁盘IO。
+(6)对于shuffle操作，reduce端，会需要内存来存放拉取的数据并进行聚合。如果内存不够，也会写入磁盘。如果给executor分配更多内存以后，就有更少的数据，需要写入磁盘，甚至不需要写入磁盘。减少了磁盘IO，提升了性能。
+(7)对于task的执行,可能会创建很多对象.如果内存比较小,可能会频繁导致JVM堆内存满了,然后频繁GC,垃圾回收minorGC和fullGC.（速度很慢）.内存加大以后，带来更少的GC，垃圾回收，避免了速度变慢，性能提升。
+
+ 4 MSCK REPAIR TABLE bigdata17_partition;
+
+
+5 spark 动态资源分配 https://mp.weixin.qq.com/s/boKldb7Gdu31KrKr1wTm9w
+	spark.max.fetch.failures.per.stage  Spark 最大 Fetch 重试次数
+6 当Spark 同时运行大量的 tasks 时，Driver 很容易出现 OOM，这是因为在 Driver 端的 Netty 服务器上产生大量 RPC 的请求积压，我们可以通过加大 RPC 服务的线程数解决 OOM 问题，比如 spark.rpc.io.serverThreads = 64
+7 Spark 1.6 开始引入了Off-heap memory(详见SPARK-11389)。这种模式不在 JVM 内申请内存，而是调用 Java 的 unsafe 相关 API 进行诸如 C 语言里面的 malloc() 直接向操作系统申请内存，由于这种方式不经过 JVM 内存管理，所以可以避免频繁的 GC，这种内存申请的缺点是必须自己编写内存申请和释放的逻辑。
+
+默认情况下，堆外内存是关闭的，我们可以通过 spark.memory.offHeap.enabled 参数启用，并且通过 spark.memory.offHeap.size 设置堆外内存大小，单位为字节。如果堆外内存被启用，那么 Executor 内将同时存在堆内和堆外内存，两者的使用互补影响，这个时候 Executor 中的 Execution 内存是堆内的 Execution 内存和堆外的 Execution 内存之和，同理，Storage 内存也一样。相比堆内内存，堆外内存只区分 Execution 内存和 Storage 内存。大家可以根据自己的情况启用堆外内存，进一步减少 GC 的压力。
+8  Spark 集群启用了动态资源分配（DynamicExecutorAllocation），以便更好的使用集群资源，而且在 Facebook 内部，Spark 是运行在多租户的集群上，所以这个也是非常合适的。比如典型的配置如下：
+	•spark.dynamicAllocation.enabled = true
+	•spark.dynamicAllocation.executorIdleTimeout = 2m
+	•spark.dynamicAllocation.minExecutors = 1
+	•spark.dynamicAllocation.maxExecutors = 2000
+9 垃圾收集调优 
+	Spark 内部会分配大量的连续内存缓存，如果对象大小超过32MB (G1GC 的最大区域大小)，那么由于大量的分配，G1GC 会遭受碎片问题。所以建议在 Spark 中使用 parallel GC 而不是 G1GC，一个典型的配置如下：
+spark.executor.extraJavaOptions = -XX:ParallelGCThreads=4 -XX:+Use
+
+ hbase hmaster standby 无法切换active
+https://mp.weixin.qq.com/s/1BiTT4SBQE0MDxbG6AmveA
+
+
+
+
+
+
+
+
+
+
+
+
+ set mapreduce.map.memory.mb=4096;
+set mapreduce.reduce.memory.mb=4096;
+
+set mapreduce.map.memory.mb=4096;
+set mapreduce.reduce.memory.mb=4096;
+
+
+!connect jdbc:hive2://node123:10000
+beeline -u jdbc:hive2://node123:10000 -e 'show databases;use dim;show tables';
+beeline -u jdbc:hive2://node123:10000  --color=true --showHeader=true
+
+hive 不支持读取hdfs 上的脚本
+beeline -u jdbc:hive2://node123:10000 -f 'hdfs:///user/flink/flink-binlog/schema/aaaa'
+
+查看表是否被锁
+show locks extended;
+unlock table <tablename>
+
+解决分区锁
+set hive.support.concurrency=false;
+
+
+hive -e "set hive.cli.print.header=true; SELECT * FROM default.s_transit_people_ic_cache " | sed 's/[\t]/,/g'  > outputData.csv
