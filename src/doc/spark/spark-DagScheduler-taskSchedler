@@ -65,7 +65,7 @@ action算子-------->
 													//为task设置调度方式  FIFOSchedulableBuilder 先进先出  FairSchedulableBuilder公平调度
 													schedulableBuilder.addTaskSetManager(manager, manager.taskSet.properties)	
 													
-					SchedulerBackend---------------->backend.reviveOffers()
+					CoarseGrainedSchedulerBackend---------------->backend.reviveOffers()
 															org.apache.spark.scheduler.cluster.CoarseGrainedClusterMessages.ReviveOffers$
 															case ReviveOffers => //模式匹配接收到的消息
 																	makeOffers() 
@@ -97,9 +97,24 @@ action算子-------->
 																					 }
 																					
 																	
-																	
-																	
-																	
+					发生消息给executor---->executorData.executorEndpoint.send(LaunchTask(new SerializableBuffer(serializedTask)))
+					CoarseGrainedExecutorBackend---->对发送的消息进行模式匹配override def receive: PartialFunction[Any, Unit] = {} 方法中
+                                                                      case LaunchTask(data) =>
+                                                                          if (executor == null) {
+                                                                                        exitExecutor(1, "Received LaunchTask command but executor was null")
+                                                                           } else {
+                                                                                 val taskDesc = TaskDescription.decode(data.value)
+                                                                                 logInfo("Got assigned task " + taskDesc.taskId)
+                                                                                    executor.launchTask(this, taskDesc)
+                                                                              }
+
+					Executor 执行launchTask 方法------------------->	org.apache.spark.executor.Executor#launchTask
+					                                                   def launchTask(context: ExecutorBackend, taskDescription: TaskDescription): Unit = {
+                                                                           val tr = new TaskRunner(context, taskDescription) // 构建taskRunner 对象
+                                                                           runningTasks.put(taskDescription.taskId, tr) // 放入正在运行
+                                                                           threadPool.execute(tr) // 线程池执行该方法  线程的运行  则进入 run方法
+                                                                         }
+                    TaskRunner----->线程的运行 run()方法               org.apache.spark.executor.Executor.TaskRunner#run
 					
 					
 					
