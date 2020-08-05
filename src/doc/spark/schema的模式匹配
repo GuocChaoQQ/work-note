@@ -1,0 +1,26 @@
+schema.fields(sparkIdx).dataType match {
+          case DataTypes.StringType =>
+            partialRow.addString(kuduIdx, row.getString(sparkIdx))
+          case DataTypes.BinaryType =>
+            partialRow.addBinary(kuduIdx, row.getAs[Array[Byte]](sparkIdx))
+          case DataTypes.BooleanType =>
+            partialRow.addBoolean(kuduIdx, row.getBoolean(sparkIdx))
+          case DataTypes.ByteType =>
+            partialRow.addByte(kuduIdx, row.getByte(sparkIdx))
+          case DataTypes.ShortType =>
+            partialRow.addShort(kuduIdx, row.getShort(sparkIdx))
+          case DataTypes.IntegerType =>
+            partialRow.addInt(kuduIdx, row.getInt(sparkIdx))
+          case DataTypes.LongType =>
+            partialRow.addLong(kuduIdx, row.getLong(sparkIdx))
+          case DataTypes.FloatType =>
+            partialRow.addFloat(kuduIdx, row.getFloat(sparkIdx))
+          case DataTypes.DoubleType =>
+            partialRow.addDouble(kuduIdx, row.getDouble(sparkIdx))
+          case DataTypes.TimestampType =>
+            partialRow.addTimestamp(kuduIdx, row.getTimestamp(sparkIdx))
+          case DecimalType() =>
+            partialRow.addDecimal(kuduIdx, row.getDecimal(sparkIdx))
+          case t =>
+            throw new IllegalArgumentException(s"No support for Spark SQL type $t")
+        }

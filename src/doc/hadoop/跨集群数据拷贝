@@ -1,0 +1,1 @@
+hadoop distcp hdfs://10.83.80.5:8020/user/admin/loan.json  hdfs://10.83.0.47:8020/user/admin/loan.json

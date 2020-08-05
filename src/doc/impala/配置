@@ -1,0 +1,6 @@
+默认impala配置不是中国的时区，所以在用from_unixtime的时候，有八个小时的时间差。
+
+解决方案1：
+impala启动时加 -use_local_tz_for_unix_timestamp_conversions=true。
+在cdh里面，impala->配置->mpala Daemo ->Impala Daemon 命令行参数高级配置代码段（安全阀） 加
+-use_local_tz_for_unix_timestamp_conversions=true

@@ -1,0 +1,52 @@
+# -n 不受.netrc文件的影响(ftp默认为读取.netrc文件中的设定)
+# -v 显示远程服务器相应信息
+# ftp自动登录批量下载文件。
+# eof只是一个分界符标志,也可以使用EOM,!等
+ftp -n  <<  eof
+open 192.168.1.171
+user guest 123456
+binary                # 文件传输类型
+cd /home/data         # cd是在远程主机目录操作的命令
+lcd /home/databackup  # lcd是在本地主机目录操作的命令
+prompt                # 取消交互
+mget *                # mget是批量的下载文件
+close
+bye
+eof
+# ftp自动登录批量上传文件
+ftp -n  <<  eof
+open 192.168.1.171
+user guest 123456
+binary
+hash
+cd /home/data
+lcd /home/databackup
+prompt
+mput *
+close
+bye
+eof
+# ftp自动登录下载单个文件
+ftp -n << eof
+open 192.168.1.171
+user guest 123456
+binary
+cd /home/data
+lcd /home/databackup
+prompt
+get a.sh a.sh
+close
+bye
+eof
+# ftp自动登录上传单个文件
+ftp -n << eof
+open 192.168.1.171
+user guest 123456
+binary
+cd /home/data
+lcd /home/databackup
+prompt
+put a.sh a.sh
+close
+bye
+eof

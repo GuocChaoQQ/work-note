@@ -1,0 +1,33 @@
+set hive.execution.engine=mr;                                                      -- 设置 Hive 执行引擎为 MapReduce
+set hive.execution.engine=spark;                                                   -- 设置 Hive 执行引擎为 Spark
+set mapreduce.job.queuename=root.default;                                          -- 设置 Yarn 对列
+set spark.driver.memory=4g;                                                        -- 设置 Spark Driver 的内存
+set spark.driver.memoryOverhead=4g;                                                -- 设置 Spark Driver 的堆外内存
+set spark.executor.memory=4g;                                                      -- 设置 Spark Executor 的内存
+set spark.executor.memoryOverhead=4g;                                              -- 设置 Spark Executor 的堆外内存
+set spark.executor.heartbeatInterval=60s;                                          -- 设置 Spark Executor 通信超时时间
+set hive.spark.client.future.timeou=360;                                           -- 设置 Spark Client 超时时间
+set hive.mapred.mode=nostrict;                                                     -- 设置 非严格模式
+set hive.exec.dynamic.partition=true;                                              -- 设置 动态分区
+set hive.exec.dynamic.partition.mode=nonstrict;                                    -- 设置 动态分区为非严格模式
+set hive.exec.max.dynamic.partitions.pernode=100;                                  -- 设置 每个执行 MR 的节点上，最大可以创建多少个动态分区
+set hive.exec.max.dynamic.partitions=1000;                                         -- 设置 所有执行 MR 的节点上，最大可以创建多少个动态分区
+set hive.exec.max.created.files=100000;                                            -- 设置 整个 MR Job 中，最大可以创建多少个 HDFS 文件
+set hive.error.on.empty.partition=false;                                           -- 设置 当有空分区生成时，是否抛出异常
+set hive.auto.convert.join=false;                                                  -- 设置 关闭自动 MapJoin
+-- MR 优化
+set hive.exec.compress.intermediate=true;                                          -- 设置 MR中间数据可以进行压缩，默认是 false
+set hive.intermediate.compression.codec=org.apache.hadoop.io.compress.snappycodec; -- 设置 MR中间数据压缩算法
+set hive.exec.compress.output=true;                                                -- 设置 MR输出数据可以进行压缩，默认是 false
+set mapreduce.map.output.compress.codec=org.apache.hadoop.io.compress.snappycodec; -- 设置 MR输出数据压缩算法，Hadoop 的配置
+-- 减少 Map 数，小文件较多时
+set mapred.max.split.size=‪268435456‬;                                               -- 设置 每个 map 处理的最大的文件大小，单位为‪ 268435456‬B=256M
+set mapred.min.split.size.per.node=100000000;                                      -- 设置 每个节点中可以处理的最小的文件大小
+set mapred.min.split.size.per.rack=100000000;                                      -- 设置 每个机架中可以处理的最小的文件大小
+set hive.exec.reducers.bytes.per.reducer=1073741824;                               -- 设置 每个 reduce 处理的数据量，默认1GB
+set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat;         -- 设置 Hive 的输入进行预聚合
+-- 增加 Map 数，在文件中的数据量大的时候，可以拆分成 Map 执行
+set mapred.reduce.tasks=10;                                                        -- 设置 reduce 的数量
+-- 设置 Reduce 数
+set hive.exec.reducers.max=1099;                                                   -- 设置 每个任务最大的 reduce 数，默认为 1099）
+-- 计算reducer数的公式很简单 N=min(hive.exec.reducers.max，总输入数据量/mapred.max.split.size)

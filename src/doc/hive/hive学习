@@ -24,3 +24,6 @@
  
   , count(DISTINCT CASE WHEN (type=2 OR type=6) THEN u ELSE NULL END)
 6 alter table dwb.dwb_order partition(d_date='2020-03-02',p_type='ecas') rename to partition(d_date='2020-03-02',p_type="ddht");
+d_date=2022-09-03/p_type=ecas
+d_date=2020-03-02/p_type=ecas
+alter table dwb.dwb_order partition(d_date='2020-03-02',p_type='ecas') rename to partition(d_date='2020-03-02',p_type="ddht");
