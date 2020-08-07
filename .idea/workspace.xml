@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1105a82b-aaeb-42fc-98d1-cf316105ab5b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/$PRODUCT_WORKSPACE_FILE$" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/worknote.iml" afterDir="false" />
+    <list default="true" id="1105a82b-aaeb-42fc-98d1-cf316105ab5b" name="Default Changelist" comment="工具">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/clickhouse" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/hive/hive问题" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/kudu/kudu" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/yarnApplications/app字段" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/doc/hive/hive常用函数.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/hive/hive常用函数.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/doc/impala/配置" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/impala/配置" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +22,13 @@
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -28,9 +38,26 @@
   <component name="ProjectId" id="1eoFDxdunvpwwySpyyOnTDZCNcR" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../data_warehouse" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\worknote\src\sql" />
+      <recent name="E:\worknote\src\doc\spark" />
+      <recent name="E:\worknote\src\doc\shell" />
+      <recent name="E:\worknote\src\doc\hive" />
+      <recent name="E:\worknote\src\doc\hbase" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\worknote\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -44,6 +71,26 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="YarnApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="yarnApplications.YarnApplication" />
+      <module name="worknote" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="yarnApplications.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.YarnApplication" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -54,8 +101,38 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1594979922575</updated>
-      <workItem from="1594979925246" duration="942000" />
+      <workItem from="1594979925246" duration="20732000" />
+      <workItem from="1596706475476" duration="19589000" />
     </task>
+    <task id="LOCAL-00001" summary="定时任务">
+      <created>1595324719612</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1595324719612</updated>
+    </task>
+    <task id="LOCAL-00002" summary="定时任务">
+      <created>1595467809836</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1595467809836</updated>
+    </task>
+    <task id="LOCAL-00003" summary="工具">
+      <created>1596598106648</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1596598106648</updated>
+    </task>
+    <task id="LOCAL-00004" summary="工具">
+      <created>1596710624851</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1596710624851</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -66,10 +143,28 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="定时任务" />
+    <MESSAGE value="工具" />
+    <option name="LAST_COMMIT_MESSAGE" value="工具" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/yarnApplications/YarnApplication.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

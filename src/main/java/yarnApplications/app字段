@@ -1,0 +1,36 @@
+id	string	The application id
+user	string	The user who started the application
+name	string	The application name
+queue	string	The queue the application was submitted to
+state	string	The application state according to the ResourceManager - valid values are members of the YarnApplicationState enum: NEW, NEW_SAVING, SUBMITTED, ACCEPTED, RUNNING, FINISHED, FAILED, KILLED
+finalStatus	string	The final status of the application if finished - reported by the application itself - valid values are the members of the FinalApplicationStatus enum: UNDEFINED, SUCCEEDED, FAILED, KILLED
+progress	float	The progress of the application as a percent
+trackingUI	string	Where the tracking url is currently pointing - History (for history server) or ApplicationMaster
+trackingUrl	string	The web URL that can be used to track the application
+diagnostics	string	Detailed diagnostics information
+clusterId	long	The cluster id
+applicationType	string	The application type
+applicationTags	string	Comma separated tags of an application
+priority	string	Priority of the submitted application
+startedTime	long	The time in which application started (in ms since epoch)
+finishedTime	long	The time in which the application finished (in ms since epoch)
+elapsedTime	long	The elapsed time since the application started (in ms)
+amContainerLogs	string	The URL of the application master container logs
+amHostHttpAddress	string	The nodes http address of the application master
+amRPCAddress	string	The RPC address of the application master
+allocatedMB	int	The sum of memory in MB allocated to the application’s running containers
+allocatedVCores	int	The sum of virtual cores allocated to the application’s running containers
+runningContainers	int	The number of containers currently running for the application
+memorySeconds	long	The amount of memory the application has allocated (megabyte-seconds)
+vcoreSeconds	long	The amount of CPU resources the application has allocated (virtual core-seconds)
+queueUsagePercentage	float	The percentage of resources of the queue that the app is using
+clusterUsagePercentage	float	The percentage of resources of the cluster that the app is using.
+preemptedResourceMB	long	Memory used by preempted container
+preemptedResourceVCores	long	Number of virtual cores used by preempted container
+numNonAMContainerPreempted	int	Number of standard containers preempted
+numAMContainerPreempted	int	Number of application master containers preempted
+logAggregationStatus	string	Status of log aggregation - valid values are the members of the LogAggregationStatus enum: DISABLED, NOT_START, RUNNING, RUNNING_WITH_FAILURE, SUCCEEDED, FAILED, TIME_OUT
+unmanagedApplication	boolean	Is the application unmanaged.
+appNodeLabelExpression	string	Node Label expression which is used to identify the nodes on which application’s containers are expected to run by default.
+amNodeLabelExpression	string	Node Label expression which is used to identify the node on which application’s AM container is expected to run.
+Response Examples
