@@ -1,0 +1,6 @@
+1 kudu有个设置项authn_token_validity_seconds,默认值是7天,也就是说它的client不能保持长连接......我第一次看见数据库客户端不能保持长连接的.
+2 scanner得到的RowResult,随着scanner继续调用next方法,RowResult里面的值是会发生变化的。但是它的RowResult不是每次生成新的,而是每次返回同一个。所以如果把每次的RowResult放到一个集合中，最后发现数据都一样。这个思路同事普遍认为和正常程序员思路不一样。
+3 它的客户端缓存了过多的数据。在一个client中open一个table以后,如果数据库的schema在外界发生了变化,从这个client上进行的数据操作,会由于schema不正确而无法操作.比如另一个client添加了一个列,前一个client插入有新添加的列时,会报错说新添加的列找不到。这样如果多个client并发操作一个table就会有schema同步的问题。
+4 安装时会要求CPU支持sse4.2指令集。这个指令集倒不是特别新，但是很多时候我们的服务器是虚拟机，有的虚拟机CPU没有这个指令集,因此无法使用kudu
+5 如果频繁删除创建table，会造成master和tablet server元数据不一致造成问题。比如删除一个table之后，master认为table已经删了，但是tablet server并不会马上删除该表的所有tablet，而是在一段时间内删除，如果所有tablet完全删除之前创建一个同名的table，master和tablet server就会很长时间内不能正常工作。
+6 创建完集群之后，第一次启动master的时候，一定要同时启动所有的master。https://issues.apache.org/jira/browse/KUDU-2080

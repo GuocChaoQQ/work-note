@@ -4,3 +4,4 @@
 impala启动时加 -use_local_tz_for_unix_timestamp_conversions=true。
 在cdh里面，impala->配置->mpala Daemo ->Impala Daemon 命令行参数高级配置代码段（安全阀） 加
 -use_local_tz_for_unix_timestamp_conversions=true
+-convert_legacy_hive_parquet_utc_timestamps=true
