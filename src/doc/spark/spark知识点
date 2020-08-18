@@ -64,7 +64,7 @@ https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query={2017}年&resource_
 
 https://sp0.baidu.com/8aQDcjqpAAV3otqbppnN2DJv/api.php?query=2017年5月&resource_id=6018&format=json
 
-spark-submit --class com.weshare.main.ReadAccountPrimaryRelation \
+spark-submit --class com.xxx.main.ReadAccountPrimaryRelation \
 --master yarn \
 --deploy-mode client \
 --driver-memory 1g \
@@ -561,10 +561,10 @@ alter table tablePartition set TBLPROPERTIES ('EXTERNAL'='FALSE');
 ln -s /opt/spark_share_jar/json-serde-1.3.7-jar-with-dependencies.jar  /opt/cloudera/parcels/CDH/lib/spark/hive/
 ln -s /opt/spark_share_jar/json-serde-1.3.7-jar-with-dependencies.jar  /opt/cloudera/parcels/CDH/lib/spark/jars/
 
-https://staff.login.weshareholdings.com/cas
-mudong.xiao   x123456
+https://staff.login.xxxholdings.com/cas
+xxx   x123456
 
-https://eagle.weshareholdings.com/
+https://xxx.xxxholdings.com/
 
 hive.map.aggr=true（用于设定是否在 map 端进行聚合，默认值为真）
 hive.groupby.mapaggr.checkinterval=100000（用于设定 map 端进行聚合操作的条目数）
@@ -597,7 +597,7 @@ my.jar
 --conf spark.cores.max=6 \
 
 spark-submit \
---class com.weshare.bigdata.dwb.handler.DwbLoanHandler \
+--class com.xxx.bigdata.dwb.handler.DwbLoanHandler \
 --master yarn \
 --deploy-mode client \
 --driver-memory 1g \
