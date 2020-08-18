@@ -224,7 +224,7 @@ boolean exists = FileLocateUtils.hdfsFileExists(sparkSession.sparkContext(), pat
 
 
 
-sftp it-dev@10.83.0.32
+sftp it-dev@xxx.32
 058417gv
 
 
@@ -378,7 +378,7 @@ invalidate metadata dw.dw_asset_repay_schedule
 
 http://10.80.1.82:8093/home 
 
-用户名 finley.li 密码 Liqifan@123
+用户名 xxx.li 密码 xxx@123
 
 
 
@@ -496,8 +496,8 @@ alter table dwb.dwb_loan_apply  add columns(`asset_level`   STRING  comment '资
 alter table dwb.dwb_loan_apply  add columns(`credit_level`  STRING  comment '信用等级');
 alter table dwb.dwb_loan_apply  add columns(`anti_fraud_level`  STRING  comment '反欺诈等级');
 
-http://10.83.0.69:8120/ 
-用户名 finley.li 密码 Liqifan@123
+http://xxx.69:8120/ 
+用户名 xxx.li 密码 xxx@123
 
 13 累加器 只能在driver 端使用.value的方式获取累计器的值，不能再executor端获取累计器的值
     累加器的值，遇到action算子  才会执行累加操作 在lazy的时候，没有action 算子，map算子中对累计器进行累加 会重复计算
@@ -512,7 +512,7 @@ http://10.83.0.69:8120/
   def getSparkSession( appName:String,masterUrl:String):SparkSession ={
     SparkSession.builder().master(masterUrl).
       appName(appName).
-      config("spark.sql.warehouse.dir", "hdfs://10.83.0.47:8020/user/hive/warehouse")
+      config("spark.sql.warehouse.dir", "hdfs://xxx.47:8020/user/hive/warehouse")
       .config("spark.some.config.option", "some-value")
       .config("spark.sql.adaptive.enabled","true") // spark 3.0 社区版才有
       .config("spark.sql.shuffle.partitions","10") // 设置 shuffle 时的分区数
