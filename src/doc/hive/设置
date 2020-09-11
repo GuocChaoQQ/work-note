@@ -31,3 +31,26 @@ set mapred.reduce.tasks=10;                                                     
 -- 设置 Reduce 数
 set hive.exec.reducers.max=1099;                                                   -- 设置 每个任务最大的 reduce 数，默认为 1099）
 -- 计算reducer数的公式很简单 N=min(hive.exec.reducers.max，总输入数据量/mapred.max.split.size)
+
+
+set hive.merge.mapfiles = true ##在 map only 的任务结束时合并小文件
+
+set hive.merge.mapredfiles = false ## true 时在 MapReduce 的任务结束时合并小文件
+
+set hive.merge.size.per.task = 256*1000*1000 ##合并文件的大小
+
+set mapred.max.split.size=256000000; ##每个 Map 最大分割大小
+
+set mapred.min.split.size.per.node=1; ##一个节点上 split 的最少值
+
+set hive.input.format=org.apache.hadoop.hive.ql.io.CombineHiveInputFormat; ##执行 Map 前进行小文件合并
+
+set hive.map.aggr = true 是否在 Map 端进行聚合，默认为 True
+
+set hive.groupby.mapaggr.checkinterval = 100000 在 Map 端进行聚合操作的条目数目
+
+ set hive.groupby.skewindata = true 当 sql 语句使用 groupby 时数据出现倾斜时，如果该变量设置为 true，那么 Hive 会自动进行 负载均衡。策略就是把 MR 任务拆分成两个：第一个先做预汇总，第二个再做最终汇总
+
+ set hive.exec.parallel=true;
+
+ set hive.exec.parallel.thread.number=8; //同一个 sql 允许并行任务的最大线程数

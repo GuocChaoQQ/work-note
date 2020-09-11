@@ -1,4 +1,4 @@
-package com.weshare.spark.entrance
+package com.xxx.spark.entrance
 
 import java.io.FileInputStream
 import java.sql.{DriverManager, PreparedStatement, Timestamp}

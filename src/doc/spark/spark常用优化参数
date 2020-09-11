@@ -1,0 +1,25 @@
+spark.maxRemoteBlockSizeFetchToMem   spark.maxRemoteBlockSizeFetchToMem(默认512m)
+    spark.shuffle.service.enabled 开启shuffle服务
+    当远程块的大小以字节计超过此阈值时，将会写出到磁盘。这是为了避免占用太多内存的巨大请求。
+    控制map和reduce端拉取多少数据到内存中，可适当减少
+spark.shuffle.file.buffer 32k     buffer大小 默认是32K  maptask端的shuffle 降低磁盘IO .
+spark.reducer.MaxSizeFlight 48M   shuffle read拉取数据量的大小
+spark.shuffle.memoryFraction 0.2  shuffle聚合内存的比例
+spark.shuffle.io.maxRetries 3 拉取数据重试次数
+spark.shuffle.sort.bypassMergeThreshold 200----针对SortShuffle SortShuffle bypass机制 默认 200分区以内
+
+
+调节Executor的堆外内存
+    Spark底层shuffle的传输方式是使用netty传输，netty在进行网络传输的过程会申请堆外内存（netty是零拷贝），所以使用了堆外内存。默认情况下，这个堆外内存上限默认是每一个executor的内存大小的10%；真正处理大数据的时候，这里都会出现问题，导致spark作业反复崩溃，无法运行；此时就会去调节这个参数，到至少1G（1024M），甚至说2G、4G。
+    executor在进行shuffle write，优先从自己本地关联的mapOutPutWorker中获取某份数据，如果本地block manager没有的话，那么会通过TransferService，去远程连接其他节点上executor的block manager去获取，尝试建立远程的网络连接，并且去拉取数据。频繁创建对象让JVM堆内存满溢，进行垃圾回收。正好碰到那个exeuctor的JVM在垃圾回收。处于垃圾回过程中，所有的工作线程全部停止；相当于只要一旦进行垃圾回收，spark / executor停止工作，无法提供响应，spark默认的网络连接的超时时长是60s；如果卡住60s都无法建立连接的话，那么这个task就失败了。task失败了就会出现shuffle file cannot find的错误。
+1.调节等待时长。
+在./spark-submit提交任务的脚本里面添加：
+--conf spark.core.connection.ack.wait.timeout=300
+Executor由于内存不足或者堆外内存不足了，挂掉了，对应的Executor上面的block manager也挂掉了，找不到对应的shuffle map output文件，Reducer端不能够拉取数据。
+2.调节堆外内存大小
+在./spark-submit提交任务的脚本里面添加
+yarn下：
+--conf  spark.yarn.executor.memoryOverhead=2048 单位M
+
+
+

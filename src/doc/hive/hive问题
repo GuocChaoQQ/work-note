@@ -1,4 +1,4 @@
-安装hive2后启动hiveserver2遇见两个错误,第一个log4j包冲突错误,解决办法进入hive的lib目录下,将log4j-slf4j-impl-2.6.2.jar改名(不使用这个jar包)改名为log4j-slf4j-impl-2.6.2.jar.deleted(其他名也可以)再启动hiveserver2: 	bin/hiveserver2第二个错误1. Jdbc连接失败,显示拒绝连接,原因:hadoop引入了一个安全伪装机制，使得hadoop 不允许上层系统直接将实际用户传递到hadoop层，而是将实际用户传递给一个超级代理，由此代理在hadoop上执行操作，避免任意客户端随意操作hadoop,在etc/hadoop/core-site.xml文件中修改为如下方式即可解决：<property>
+1 安装hive2后启动hiveserver2遇见两个错误,第一个log4j包冲突错误,解决办法进入hive的lib目录下,将log4j-slf4j-impl-2.6.2.jar改名(不使用这个jar包)改名为log4j-slf4j-impl-2.6.2.jar.deleted(其他名也可以)再启动hiveserver2: 	bin/hiveserver2第二个错误1. Jdbc连接失败,显示拒绝连接,原因:hadoop引入了一个安全伪装机制，使得hadoop 不允许上层系统直接将实际用户传递到hadoop层，而是将实际用户传递给一个超级代理，由此代理在hadoop上执行操作，避免任意客户端随意操作hadoop,在etc/hadoop/core-site.xml文件中修改为如下方式即可解决：<property>
         <name>hadoop.proxyuser.tanzhengqiang.hosts</name>
         <value>*</value>
      </property>
@@ -6,3 +6,15 @@
         <name>hadoop.proxyuser.tanzhengqiang.groups</name>
         <value>*</value>
      </property>
+2 建表指定hive 的序列化方式为JSONserde 导致使用hive on spark 或者 hive on mr 出现找不到jar包的问题
+    hive on spark 这个jar包软连接为
+     hive-exec-2.1.1-cdh6.3.0.jar --- >hive-exec.jar
+     hive-serde-2.1.1-cdh6.3.0.jar --->hive-serde.jar
+    软连接
+    /opt/cloudera/parcels/CDH-6.3.0-1.cdh6.3.0.p0.1279813/jars/hive-hcatalog-core-2.1.1-cdh6.3.0.jar 这个到/opt/cloudera/parcels/CDH/lib/spark/jars
+
+
+jsonserde
+ln -s /opt/cloudera/parcels/CDH/lib/hive/lib/hive-exec-2.1.1-cdh6.3.0.jar /opt/cloudera/parcels/CDH/lib/hadoop-yarn/lib
+ln -s /opt/cloudera/parcels/CDH/lib/hive/lib/hive-exec.jar /opt/cloudera/parcels/CDH/lib/hadoop-yarn/lib
+ln -s /opt/cloudera/parcels/CDH/jars/hive-hcatalog-core-2.1.1-cdh6.3.0.jar /opt/cloudera/parcels/CDH/lib/hadoop-yarn/lib

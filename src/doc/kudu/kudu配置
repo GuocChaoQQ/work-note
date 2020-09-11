@@ -1,0 +1,10 @@
+gflagfile 高级代码片段
+RPC can not complete before timeout: KuduRpc(method=CreateTable, tablet=null, attempt=26, DeadlineTracker(timeout=30000, elapsed=29427)
+-rpc_encryption=disabled
+-rpc_authentication=disabled
+-trusted_subnets=0.0.0.0/0
+
+
+https://www.cnblogs.com/wcgstudy/p/11273804.html
+
+

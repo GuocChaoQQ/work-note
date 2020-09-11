@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1105a82b-aaeb-42fc-98d1-cf316105ab5b" name="Default Changelist" comment="工具">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/doc/clickhouse" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/doc/hive/hive问题" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/doc/kudu/kudu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/yarnApplications/app字段" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="1105a82b-aaeb-42fc-98d1-cf316105ab5b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/doc/cdh/hdfs配置" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/hive/hiveUdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/kudu/kudu配置" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/linux/常用命令" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/linux/编辑器" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/shell/flie_sh.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/shell/hbase_query.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/shell/run_s.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/shell/uploadjar.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/doc/spark/spark常用优化参数" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/doc/hive/hive常用函数.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/hive/hive常用函数.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/doc/impala/配置" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/impala/配置" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/doc/hive/hive问题" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/hive/hive问题" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/doc/hive/设置" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/hive/设置" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/doc/shell/shell 学习" beforeDir="false" afterPath="$PROJECT_DIR$/src/doc/shell/shell 学习" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sparkclass/spark根据黑名单拉取mysql实例数据，写出建表语句" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sparkclass/spark根据黑名单拉取mysql实例数据，写出建表语句" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,22 +46,23 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../data_warehouse" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/doc/shell" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.build" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\worknote\src\doc\shell" />
+      <recent name="E:\worknote\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\worknote\src\sql" />
       <recent name="E:\worknote\src\doc\spark" />
       <recent name="E:\worknote\src\doc\shell" />
       <recent name="E:\worknote\src\doc\hive" />
       <recent name="E:\worknote\src\doc\hbase" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\worknote\src" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -102,7 +108,8 @@
       <option name="presentableId" value="Default" />
       <updated>1594979922575</updated>
       <workItem from="1594979925246" duration="20732000" />
-      <workItem from="1596706475476" duration="19589000" />
+      <workItem from="1596706475476" duration="30912000" />
+      <workItem from="1597803541321" duration="18965000" />
     </task>
     <task id="LOCAL-00001" summary="定时任务">
       <created>1595324719612</created>
@@ -132,7 +139,35 @@
       <option name="project" value="LOCAL" />
       <updated>1596710624851</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="工具">
+      <created>1596785131307</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1596785131307</updated>
+    </task>
+    <task id="LOCAL-00006" summary="工具">
+      <created>1596785164847</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1596785164847</updated>
+    </task>
+    <task id="LOCAL-00007" summary="工具">
+      <created>1597740779968</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1597740779968</updated>
+    </task>
+    <task id="LOCAL-00008" summary="工具">
+      <created>1597741491284</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1597741491284</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
